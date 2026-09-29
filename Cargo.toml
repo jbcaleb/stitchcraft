@@ -1,0 +1,28 @@
+# Stitchcraft: a Scratch-style block editor whose canvas exports a Minecraft
+# mod for Fabric and NeoForge.
+#
+# `vendor/blockstitch` is a checkout of Blockworked/blockstitch (qml branch) -
+# see scripts/fetch-blockstitch.ps1. It is excluded from this workspace because
+# `crates/blockstitch-core` inside it declares a workspace of its own.
+
+[workspace]
+resolver = "3"
+members = ["crates/blocks", "crates/export", "crates/app"]
+exclude = ["vendor/blockstitch"]
+# A bare `cargo run`/`cargo build` means the editor. Use `cargo test --workspace` to
+# test everything.
+default-members = ["crates/app"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "GPL-3.0-or-later"
+rust-version = "1.85"
+
+[workspace.dependencies]
+blockstitch-core = { path = "vendor/blockstitch/crates/blockstitch-core" }
+blockstitch-qml = { path = "vendor/blockstitch" }
+stitchcraft-blocks = { path = "crates/blocks" }
+stitchcraft-export = { path = "crates/export" }
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.151"

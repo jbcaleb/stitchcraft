@@ -1,0 +1,12 @@
+# Copy to config.toml and point QMAKE at your Qt install.
+#
+# Lets a bare `cargo run` work with no environment set up by hand:
+#  * QMAKE is how the Qt bindings find Qt at build time.
+#  * The runner puts Qt's bin folder (found from QMAKE) on PATH for the run, since
+#    the exe loads Qt6*.dll at startup.
+
+[env]
+QMAKE = 'C:\path\to\Qt\6.10.3\msvc2022_64\bin\qmake.exe'
+
+[target.x86_64-pc-windows-msvc]
+runner = ["scripts/run-with-qt.cmd"]

@@ -1,0 +1,7 @@
+<!-- Qt looks for the Controls configuration at the root of the resource system,
+     so this one file is mounted at ":/" rather than under the QML module. -->
+<RCC>
+  <qresource prefix="/">
+    <file>qtquickcontrols2.conf</file>
+  </qresource>
+</RCC>

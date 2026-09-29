@@ -1,0 +1,17 @@
+[package]
+name = "stitchcraft-export"
+description = "Compiles a Stitchcraft canvas into a Fabric + NeoForge mod source tree."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+blockstitch-core.workspace = true
+stitchcraft-blocks.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+
+[[bin]]
+name = "stitchcraft-export"
+path = "src/main.rs"

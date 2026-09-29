@@ -1,0 +1,12 @@
+[package]
+name = "stitchcraft-blocks"
+description = "Stitchcraft's block vocabulary: the Minecraft-mod instruction set a canvas edits."
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+blockstitch-core.workspace = true
+serde.workspace = true
+serde_json.workspace = true
