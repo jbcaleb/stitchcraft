@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Stitchcraft
+GenericName=Minecraft mod builder
+Comment=Build Minecraft mods for Fabric and NeoForge with blocks
+Exec=stitchcraft
+Terminal=false
+Type=Application
+Icon=stitchcraft
+Categories=Development;Game;
+Keywords=Minecraft;Mod;Fabric;NeoForge;Blocks;Scratch;
+StartupWMClass=stitchcraft

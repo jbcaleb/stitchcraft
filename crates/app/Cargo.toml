@@ -24,3 +24,5 @@ cxx = "1.0"
 
 [build-dependencies]
 cxx-qt-build = { version = "0.10", features = ["link_qt_object_files"] }
+# Puts the app icon and version info into stitchcraft.exe on Windows; a no-op elsewhere.
+embed-resource = "3"

@@ -14,6 +14,11 @@
 //! This binary is the shell around them: it starts Qt, registers both QML
 //! modules, and hands the canvas a [`bridge::qobject::Backend`].
 
+// A release build on Windows is a GUI program: launched from a shortcut it must not
+// bring a console window up behind the editor. Debug builds keep the console, so a
+// `cargo run` still shows Qt's warnings and panics.
+#![cfg_attr(all(windows, not(debug_assertions)), windows_subsystem = "windows")]
+
 mod bridge;
 mod edit;
 mod wire;

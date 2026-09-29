@@ -8,6 +8,10 @@ crates/app/.qmlls.ini
 # Per-machine Qt location; see .cargo/config.toml.example.
 /.cargo/config.toml
 
+# Packaging output: installers, staged folders, app bundles
+/dist/
+/AppDir/
+
 # Exported mods and saved canvases from a local run
 /out/
 *.stitch

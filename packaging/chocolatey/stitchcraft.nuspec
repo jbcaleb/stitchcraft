@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>stitchcraft</id>
+    <version>__VERSION__</version>
+    <title>Stitchcraft</title>
+    <authors>jbcaleb</authors>
+    <owners>jbcaleb</owners>
+    <projectUrl>https://github.com/jbcaleb/stitchcraft</projectUrl>
+    <projectSourceUrl>https://github.com/jbcaleb/stitchcraft</projectSourceUrl>
+    <packageSourceUrl>https://github.com/jbcaleb/stitchcraft/tree/main/packaging/chocolatey</packageSourceUrl>
+    <bugTrackerUrl>https://github.com/jbcaleb/stitchcraft/issues</bugTrackerUrl>
+    <licenseUrl>https://github.com/jbcaleb/stitchcraft/blob/main/LICENSE</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <iconUrl>https://cdn.jsdelivr.net/gh/jbcaleb/stitchcraft@__TAG__/res/icons/stitchcraft.png</iconUrl>
+    <releaseNotes>https://github.com/jbcaleb/stitchcraft/releases/tag/__TAG__</releaseNotes>
+    <tags>stitchcraft minecraft mod fabric neoforge blocks scratch</tags>
+    <summary>Build Minecraft mods for Fabric and NeoForge with a Scratch-style block editor.</summary>
+    <description>Stitchcraft is a desktop app for building Minecraft mods visually. Snap together event-hook and registration blocks, then export the canvas as a Fabric and NeoForge mod.</description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+  </files>
+</package>

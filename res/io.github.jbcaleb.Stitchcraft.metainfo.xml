@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.jbcaleb.Stitchcraft</id>
+
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-or-later</project_license>
+
+  <name>Stitchcraft</name>
+  <summary>Build Minecraft mods by snapping blocks together</summary>
+
+  <developer id="io.github.jbcaleb">
+    <name>jbcaleb</name>
+  </developer>
+
+  <description>
+    <p>
+      Stitchcraft is a Scratch-style block editor for Minecraft mods. Snap
+      together event-hook blocks and registration blocks for items, blocks and
+      entities, then export the canvas as a mod for Fabric and NeoForge that
+      uses FrozenLib's registries.
+    </p>
+  </description>
+
+  <launchable type="desktop-id">stitchcraft.desktop</launchable>
+
+  <url type="homepage">https://github.com/jbcaleb/stitchcraft</url>
+  <url type="bugtracker">https://github.com/jbcaleb/stitchcraft/issues</url>
+  <url type="vcs-browser">https://github.com/jbcaleb/stitchcraft</url>
+
+  <content_rating type="oars-1.1" />
+
+  <requires>
+    <display_length compare="ge">768</display_length>
+  </requires>
+
+  <releases>
+    <release version="0.1.0" date="2026-09-29">
+      <description>
+        <p>First release.</p>
+      </description>
+    </release>
+  </releases>
+</component>

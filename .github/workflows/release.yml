@@ -1,0 +1,135 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag (e.g. 0.1.0)"
+        required: true
+        type: string
+      release_name:
+        description: "Release title (leave blank to use tag as title)"
+        required: false
+        type: string
+        default: ""
+
+jobs:
+  version:
+    name: Version
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.v.outputs.tag }}
+      number: ${{ steps.v.outputs.number }}
+    steps:
+      - id: v
+        run: |
+          TAG="${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "number=${TAG#v}" >> "$GITHUB_OUTPUT"
+
+  package:
+    name: Package
+    needs: version
+    uses: ./.github/workflows/package.yml
+    with:
+      version: ${{ needs.version.outputs.number }}
+      retention: 90
+
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    needs: [version, package]
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+          path: ./release-artifacts
+
+      - name: Build release notes from CHANGELOG.md
+        env:
+          TAG: ${{ needs.version.outputs.tag }}
+        run: |
+          VERSION="${TAG#v}"
+          awk -v ver="$VERSION" 'index($0, "## [" ver "]") == 1 {flag=1; print; next} flag && /^## \[/ {exit} flag' CHANGELOG.md > /tmp/changelog_section.md
+          if [ ! -s /tmp/changelog_section.md ]; then
+            echo "## $TAG" > /tmp/changelog_section.md
+            echo "" >> /tmp/changelog_section.md
+            echo "See commit history since the previous tag for details." >> /tmp/changelog_section.md
+          fi
+          {
+            cat /tmp/changelog_section.md
+            echo ""
+            echo "## Downloads"
+            echo ""
+            echo "| Platform | File |"
+            echo "|---|---|"
+            for f in ./release-artifacts/*; do
+              name="$(basename "$f")"
+              case "$name" in
+                *-windows-*-setup.exe)    what="Windows installer" ;;
+                *-windows-*-portable.zip) what="Windows portable (unzip and run stitchcraft.exe)" ;;
+                *-windows-*.msix)         what="Windows MSIX (unsigned)" ;;
+                *.AppImage)               what="Linux AppImage" ;;
+                *-macos-*.app.zip)        what="macOS app bundle (not notarized)" ;;
+                *.cer)                    continue ;;
+                *)                        what="" ;;
+              esac
+              echo "| $what | \`$name\` |"
+            done
+          } > RELEASE_BODY.md
+          cat RELEASE_BODY.md
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ needs.version.outputs.tag }}
+          name: ${{ inputs.release_name || needs.version.outputs.tag }}
+          draft: false
+          prerelease: false
+          fail_on_unmatched_files: false
+          files: ./release-artifacts/*
+          body_path: RELEASE_BODY.md
+
+  chocolatey:
+    name: Chocolatey
+    needs: [version, release]
+    uses: ./.github/workflows/chocolatey.yml
+    with:
+      tag: ${{ needs.version.outputs.tag }}
+    secrets: inherit
+
+  homebrew:
+    name: Homebrew
+    needs: [version, release]
+    uses: ./.github/workflows/homebrew.yml
+    with:
+      tag: ${{ needs.version.outputs.tag }}
+    secrets: inherit
+
+  winget:
+    name: Publish to winget
+    runs-on: windows-latest
+    needs: [version, release]
+    env:
+      WINGET_TOKEN: ${{ secrets.WINGET_TOKEN }}
+
+    steps:
+      # Updates an existing package; the first version is submitted by hand.
+      - name: Open winget-pkgs PR
+        if: env.WINGET_TOKEN != ''
+        uses: vedantmgoyal9/winget-releaser@main
+        with:
+          identifier: jbcaleb.Stitchcraft
+          release-tag: ${{ needs.version.outputs.tag }}
+          installers-regex: '-setup\.exe$'
+          token: ${{ secrets.WINGET_TOKEN }}

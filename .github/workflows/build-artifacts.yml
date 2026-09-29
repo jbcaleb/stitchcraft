@@ -1,0 +1,13 @@
+# Every push builds all the packages, so a broken installer is noticed the day it
+# breaks, not on release day. The artifacts are kept for two weeks.
+name: Build Artifacts
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  package:
+    uses: ./.github/workflows/package.yml
+    with:
+      sign_msix_test: true

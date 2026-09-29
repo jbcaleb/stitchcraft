@@ -106,6 +106,48 @@ exports it:
 cargo run -p stitchcraft-export --example wonder_blocks -- out
 ```
 
+## Installing
+
+Install [`just`](https://github.com/casey/just) (`cargo install just`), then, from
+the checkout, on Windows, Linux or macOS:
+
+```bash
+just install    # build, then install to this machine
+just replace    # rebuild, then swap the installed copy for the new build
+just uninstall
+```
+
+`replace` builds first and only then removes the old copy, so a failed build leaves
+the installed app alone.
+
+| | `just install` puts it | Notes |
+| --- | --- | --- |
+| Windows | `%LOCALAPPDATA%\Programs\Stitchcraft`, plus a Start menu entry and an "Installed apps" entry | Per user; no administrator prompt. Qt is copied in with `windeployqt`, so the install does not need Qt. It refuses to replace a copy that is running. |
+| Linux | `/usr/local` (`PREFIX=~/.local just install` to change) | Uses `sudo` unless the prefix is writable. Needs Qt 6 (with Quick Controls, SVG) from your distro at run time; `just appimage` builds a self-contained one instead. |
+| macOS | `/Applications/Stitchcraft.app` | Self-contained bundle, ad-hoc signed, not notarized. |
+
+Other recipes: `just installer` (Windows Inno Setup installer, needs
+[Inno Setup 6](https://jrsoftware.org/isdl.php)), `just msix`, `just appimage`
+(Linux), `just bundle` (macOS). Output goes to `dist/`.
+
+### Releases
+
+Every push builds all the packages (`.github/workflows/build-artifacts.yml`) and
+keeps them as workflow artifacts for two weeks. Pushing a tag builds them again
+and publishes a GitHub release (`release.yml`) with, per platform: a Windows
+installer, portable zip and MSIX; a macOS app bundle; a Linux AppImage. The
+release notes come from the matching `## [x.y.z]` section of `CHANGELOG.md`.
+ARM builds (Windows, Linux) are only attempted when the repository is public,
+because GitHub does not offer ARM runners to private ones.
+
+The release workflow can also publish to package managers, each only if its secret
+exists: Chocolatey (`CHOCO_API_KEY`), a Homebrew tap `jbcaleb/homebrew-tap`
+(`HOMEBREW_TAP_TOKEN`), and winget (`WINGET_TOKEN`; the first version of a winget
+package has to be submitted by hand).
+
+The MSIX is unsigned in a release (a real certificate, or the Store, has to sign it),
+and its publisher identity in `packaging/msix/AppxManifest.xml` is a placeholder.
+
 ## Licensing
 
 Stitchcraft is GPL-3.0-or-later (see `LICENSE`). It links `blockstitch-qml`, which
