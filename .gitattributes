@@ -1,0 +1,6 @@
+* text=auto
+*.sh text eol=lf
+justfile text eol=lf
+*.rb text eol=lf
+*.in text eol=lf
+*.desktop text eol=lf

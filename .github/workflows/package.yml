@@ -72,6 +72,12 @@ jobs:
           host: ${{ matrix.qt_host }}
           cache: true
 
+      # cxx-qt looks at QMAKE only, not PATH, and otherwise downloads a minimal Qt of
+      # its own instead of using the one just installed.
+      - name: Point the build at Qt
+        shell: pwsh
+        run: Add-Content -Path $env:GITHUB_ENV -Value "QMAKE=$env:QT_ROOT_DIRbinqmake.exe"
+
       - name: Work out the version
         id: version
         shell: bash
@@ -155,6 +161,9 @@ jobs:
           version: ${{ env.QT_VERSION }}
           cache: true
 
+      - name: Point the build at Qt
+        run: echo "QMAKE=$QT_ROOT_DIR/bin/qmake" >> "$GITHUB_ENV"
+
       - name: Build the app bundle
         run: ./scripts/build-macos-bundle.sh aarch64-apple-darwin
 
@@ -202,6 +211,9 @@ jobs:
           arch: ${{ matrix.qt_arch }}
           host: ${{ matrix.qt_host }}
           cache: true
+
+      - name: Point the build at Qt
+        run: echo "QMAKE=$QT_ROOT_DIR/bin/qmake" >> "$GITHUB_ENV"
 
       - name: Build the AppImage
         run: ./scripts/build-appimage.sh
