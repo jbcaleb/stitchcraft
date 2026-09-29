@@ -76,7 +76,7 @@ jobs:
       # its own instead of using the one just installed.
       - name: Point the build at Qt
         shell: pwsh
-        run: Add-Content -Path $env:GITHUB_ENV -Value "QMAKE=$env:QT_ROOT_DIRbinqmake.exe"
+        run: Add-Content -Path $env:GITHUB_ENV -Value "QMAKE=$env:QT_ROOT_DIR/bin/qmake.exe"
 
       - name: Work out the version
         id: version
