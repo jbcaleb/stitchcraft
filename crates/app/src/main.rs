@@ -5,7 +5,7 @@
 //!
 //! Three pieces, in three crates:
 //!
-//! * `blockstitch-core` and `blockstitch-qml` (vendored) are the block editor
+//! * `blockstitch-core` and `blockstitch-qml` (from GitHub) are the block editor
 //!   itself - the document model, the editing operations, and the Qt canvas;
 //! * `stitchcraft-blocks` is the vocabulary those operate on: what a block can
 //!   say about a mod;

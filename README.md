@@ -16,7 +16,6 @@ operation, and the Qt 6/QML components are the canvas itself.
 crates/blocks    the vocabulary — what a block can say about a mod
 crates/export    the compiler   — canvas in, Java + Gradle + resources out
 crates/app       the editor     — Qt 6/QML, on blockstitch's canvas
-vendor/blockstitch   upstream checkout (scripts/fetch-blockstitch.ps1 refreshes it)
 ```
 
 ### Blocks
@@ -70,19 +69,12 @@ jar to compile against.
 
 Needs Rust 1.85+, Qt 6.10+ and a C++ toolchain (cxx-qt 0.10 requires Qt 6.10).
 
-First, fetch blockstitch. `vendor/` is not part of this repository - it is
-blockstitch itself, and a clone does not include it:
+Cargo downloads blockstitch (the `qml` branch of
+[Blockworked/blockstitch](https://github.com/Blockworked/blockstitch)) by itself on
+the first build, and `Cargo.lock` pins the exact commit. Nothing to fetch or copy.
+`cargo update -p blockstitch-core -p blockstitch-qml` moves to a newer one.
 
-```powershell
-.\scripts\fetch-blockstitch.ps1
-```
-
-That clones the `qml` branch of
-[Blockworked/blockstitch](https://github.com/Blockworked/blockstitch) into
-`vendor/blockstitch`. Run it again to update. Without it every `cargo` command
-fails, complaining that it cannot find `blockstitch-core`.
-
-Then, tell Cargo where Qt is. Copy `.cargo/config.toml.example` to
+One-time setup: tell Cargo where Qt is. Copy `.cargo/config.toml.example` to
 `.cargo/config.toml` and edit the `QMAKE` path. That file is git-ignored because
 the path is specific to your machine. After that, running the editor is just:
 

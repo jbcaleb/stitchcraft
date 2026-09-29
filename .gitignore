@@ -8,9 +8,6 @@ crates/app/.qmlls.ini
 # Per-machine Qt location; see .cargo/config.toml.example.
 /.cargo/config.toml
 
-# blockstitch is fetched, not committed - see scripts/fetch-blockstitch.ps1.
-/vendor/
-
 # Exported mods and saved canvases from a local run
 /out/
 *.stitch
